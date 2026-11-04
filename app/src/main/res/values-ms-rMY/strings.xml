@@ -1,0 +1,88 @@
+<resources>
+    <!-- Homepage -->
+    <string name="app_name">Clandestinely</string>
+    <string name="app_home">Laman Utama</string>
+    <string name="app_profile">Profil</string>
+    <string name="app_settings">Tetapan</string>
+    <string name="app_notifications">Notifikasi</string>
+    <string name="app_search">Carian</string>
+
+    <!-- Login Page -->
+    <string name="user_login">Log Masuk</string>
+    <string name="user_logout">Log Keluar</string>
+    <string name="user_register">Daftar</string>
+    <string name="user_forgot_password">Lupa kata laluan?</string>
+    <string name="user_email">E-mel</string>
+    <string name="user_password">Kata Laluan</string>
+
+    <!-- Status -->
+    <string name="status_loading">Memuatkan…</string>
+    <string name="status_success">Berjaya</string>
+    <string name="status_error">Ralat</string>
+
+    <!-- Main App Features -->
+    <string name="feature_forecast">Ramalan Terkini</string>
+    <string name="feature_campus_map">Peta Kampus</string>
+    <string name="feature_last_updated">Waktu kemas kini terakhir: </string>
+    <string name="feature_refresh">Kemas Kini</string>
+    <string name="feature_safety_tip">Tip Keselamatan</string>
+    <string name="feature_select_location">Pilih Lokasi</string>
+    <string name="feature_suggest_route">Cadangkan Laluan Selamat</string>
+    <string name="feature_route_estimated_time">Anggaran masa:</string>
+    <string name="feature_route_distance">Jarak:</string>
+
+    <!-- Weather Conditions -->
+    <string name="weather_sunny">Cerah</string>
+    <string name="weather_cloudy">Berawan</string>
+    <string name="weather_drizzle">Hujan Renyai</string>
+    <string name="weather_heavy_rain">Hujan Lebat</string>
+    <string name="weather_thunderstorm">Ribut Petir</string>
+    <string name="weather_haze">Jerebu</string>
+
+    <!-- Faculties, Accommodations and Other Locations -->
+    <string name="fac_arts">Fakulti Sastera dan Sains Sosial</string>
+    <string name="fac_built_enviroment">Fakulti Rekabentuk Bandar dan Alam Bina</string>
+    <string name="fac_business">Fakulti Perniagaan dan Ekonomi</string>
+    <string name="fac_computer_science">Fakulti Sains Komputer dan Teknologi Maklumat</string>
+    <string name="fac_creative_arts">Fakulti Seni Kreatif</string>
+    <string name="fac_dentistry">Fakulti Pergigian</string>
+    <string name="fac_education">Fakulti Pendidikan</string>
+    <string name="fac_engineering">Fakulti Kejuruteraan</string>
+    <string name="fac_islamic_studies">Akademi Pengajian Islam</string>
+    <string name="fac_languages">Fakulti Bahasa dan Linguistik</string>
+    <string name="fac_law">Fakulti Undang-Undang</string>
+    <string name="fac_malay_studies">Akademi Pengajian Melayu</string>
+    <string name="fac_medicene">Fakulti Perubatan</string>
+    <string name="fac_nursing">Fakulti Kejururawatan</string>
+    <string name="fac_pharmacy">Fakulti Farmasi</string>
+    <string name="fac_science">Fakulti Sains</string>
+    <string name="fac_sports">Fakulti Sains Sukan</string>
+
+    <string name="college_kk1">KK1 (Tuanku Abdul Rahman)</string>
+    <string name="college_kk2">KK2 (Tuanku Bahiyah)</string>
+    <string name="college_kk3">KK3 (Tunku Kurshiah)</string>
+    <string name="college_kk4">KK4 (Bestari)</string>
+    <string name="college_kk5">KK5 (Dayasari)</string>
+    <string name="college_kk6">KK6 (Ibnu Sina)</string>
+    <string name="college_kk7">KK7 (Za'ba)</string>
+    <string name="college_kk8">KK8 (Kinabalu)</string>
+    <string name="college_kk9">KK9 (Tun Syed Zahiruddin)</string>
+    <string name="college_kk10">KK10 (Tun Ahmad Zaidi)</string>
+    <string name="college_kk11">KK11 (Ungku Aziz)</string>
+    <string name="college_kk12">KK12 (Raja Dr. Nazrin Shah)</string>
+    <string name="college_kk13">KK13 (Kolej Kediaman Ke-13)</string>
+    <string name="college_ih">Rumah Antarabangsa</string>
+
+    <string name="loc_dtc">Dewan Tunku Canselor (DTC)</string>
+    <string name="loc_library">Perpustakaan Utama</string>
+    <string name="loc_um_central">UM Sentral</string>
+    <string name="loc_exam">Bangunan Peperiksaan</string>
+    <string name="loc_sports_complex">Kompleks Sukan dan Stadium UM</string>
+    <string name="loc_ummc">Pusat Perubatan Universiti Malaya (PPUM)</string>
+    <string name="loc_rimba_ilmu">Taman Botani Rimba Ilmu</string>
+    <string name="loc_varsity_lake">Tasik Varsiti</string>
+    <string name="loc_kl_gate">Pintu KL (Kuala Lumpur)</string>
+    <string name="loc_pj_gate">Pintu PJ (Petaling Jaya)</string>
+    <string name="loc_ds_gate">Pintu Damansara</string>
+    <string name="loc_ji_gate">Pintu Jalan Ilmu</string>
+</resources>
