@@ -43,7 +43,7 @@
     <string name="fac_arts">Faculty of Arts and Social Sciences</string>
     <string name="fac_built_enviroment">Faculty of Built Enviroment</string>
     <string name="fac_business">Faculty of Business and Economics</string>    
-    <string name="fac_computer_science">Faculty of Computer Science and Information Tehcnology</string
+    <string name="fac_computer_science">Faculty of Computer Science and Information Tehcnology</string>
     <string name="fac_creative_arts">Faculty of Creative Arts</string>
     <string name="fac_dentistry">Faculty of Dentistry</string>
     <string name="fac_education">Faculty of Education</string>
@@ -53,8 +53,11 @@
     <string name="fac_law">Faculty of Law</string>
     <string name="fac_malay_studies">Academy of Malay Studies</string>
     <string name="fac_medicene">Faculty of Medicene</string>
+    <string name="fac_nursing">Faculty of Nursing</string>
     <string name="fac_pharmacy">Faculty of Pharmacy</string>    
     <string name="fac_science">Faculty of Science</string>
+    <string name="fac_sports">Faculty of Sports Science</string>
+     
     <string name="college_kk1">KK1 (Tuanku Abdul Rahman)</string>
     <string name="college_kk2">KK2 (Tuanku Bahiyah)</string>
     <string name="college_kk3">KK3 (Tunku Kurshiah)</string>
@@ -67,8 +70,9 @@
     <string name="college_kk10">KK10 (Tun Ahmad Zaidi)</string>
     <string name="college_kk11">KK11 (Ungku Aziz)</string>
     <string name="college_kk12">KK12 (Raja Dr. Nazrin Shah)</string>
-    <string name="college_kk13">KK13 (13 thResidential College)</string>
+    <string name="college_kk13">KK13 (13th Residential College)</string>
     <string name="college_ih">International House</string>
+     
     <string name="loc_dtc">Dewan Tunku Canselor (DTC)</string>
     <string name="loc_library">Main Library</string>
     <string name="loc_um_central">UM Central</string>
