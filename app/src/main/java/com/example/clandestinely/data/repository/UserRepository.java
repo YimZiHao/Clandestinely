@@ -34,6 +34,10 @@ import java.util.Map;
  */
 public class UserRepository {
 
+    /** Same limits as validUser() in firebase/firestore.rules. */
+    static final int MAX_NAME_LENGTH = 60;
+    static final int MAX_EMAIL_LENGTH = 120;
+
     private final FirebaseFirestore db;
 
     public UserRepository() {
@@ -65,8 +69,9 @@ public class UserRepository {
             if (name == null || name.trim().isEmpty()) {
                 name = user.isAnonymous() ? "Guest" : "UM user";
             }
-            profile.setDisplayName(name);
-            profile.setEmail(user.isAnonymous() ? null : user.getEmail());
+            // Firestore rules allow displayName up to 60 characters and email up to 120.
+            profile.setDisplayName(limit(name.trim(), MAX_NAME_LENGTH));
+            profile.setEmail(user.isAnonymous() ? null : limit(user.getEmail(), MAX_EMAIL_LENGTH));
             profile.setGuest(user.isAnonymous());
             // createdAt / updatedAt stay null so Firestore fills in the server time.
             return ref.set(profile)
@@ -130,6 +135,12 @@ public class UserRepository {
     private Task<Void> update(String uid, Map<String, Object> changes) {
         changes.put("updatedAt", FieldValue.serverTimestamp());
         return userDoc(uid).update(changes);
+    }
+
+    /** Cuts {@code value} to at most {@code max} characters; null stays null. */
+    static String limit(String value, int max) {
+        if (value == null) return null;
+        return value.length() > max ? value.substring(0, max) : value;
     }
 
     private static UserProfile toProfile(DocumentSnapshot snapshot, String uid) {

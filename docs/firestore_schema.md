@@ -164,7 +164,7 @@ The app calculates `expiresAt` as the **earliest** of:
 Example: a report made at 21:00 can never last past 00:00, even with confirmations.
 
 - The app shows only reports where `expiresAt > now`, so expired reports disappear from the map straight away. No background job is needed to hide them.
-- To actually delete old documents, turn on a Firestore **TTL policy** on `expiresAt`. Firestore removes expired documents automatically, usually within a day. Photos in Storage need a separate clean-up (a Storage lifecycle rule, or a scheduled Cloud Function at midnight).
+- To actually delete old documents, turn on a Firestore **TTL policy** on `expiresAt` (needs the Blaze plan, so not set up yet). Firestore removes expired documents automatically, usually within a day. Photos in Storage need a separate clean-up (a Storage lifecycle rule, or a scheduled Cloud Function at midnight).
 
 ### 4.2 How `nearestEdgeId` is set (FR4.3)
 
@@ -280,13 +280,13 @@ The live rules are in `firebase/firestore.rules` and `firebase/storage.rules`, d
 | `users/{uid}` | Only that user | Only that user; unknown fields and invalid settings are rejected |
 | `hazard_reports` | Anyone signed in (guests too) | Create: your own report, valid category, 0 confirmations, `createdAt` = server time, lasts at most 2 h. Delete: only the reporter |
 | Confirming a report | – | Anyone signed in **except the reporter**, once per person, only while the report is active. Only `confirmCount` (+1) and `expiresAt` (+1 h at most, never past 10 h) can change, together with the user's `confirmations` doc |
-| `tips_cache` | Anyone signed in | Anyone signed in, if the tip is well formed: valid time slot and source, text up to 300 characters, cached for at most 1 h. Tips can't be deleted from the app |
+| `tips_cache` | Anyone signed in | Signed-in users **except guests**, if the tip is well formed (valid time slot and source, text up to 300 characters, cached for at most 1 h) and saved under the ID that matches its states, time slot and sensitivities. Tips can't be deleted from the app |
 | `hazard_photos/` (Storage) | Anyone signed in | Upload only: JPEG name, image type, under 5 MB. Photos can't be overwritten or deleted from the app |
 | Anything else | No one | No one |
 
 The midnight cut-off is applied by the app when it calculates `expiresAt`; the rules only enforce the 2 h / +1 h / 10 h limits. Rules allow 5 minutes of leeway for a phone clock that is slightly fast.
 
-**Known limitation:** clients write to `tips_cache` directly, so a modified app could save a bad tip. A production app would move tip generation to a Cloud Function. This is acceptable for the prototype and can be listed under Limitations in the report.
+**Known limitation:** signed-in (non-guest) users write to `tips_cache` directly, so a modified app could still save a misleading tip. A production app would move tip generation to a Cloud Function. This is acceptable for the prototype and can be listed under Limitations in the report.
 
 **Storage needs the Blaze plan.** Since 3 Feb 2026, Cloud Storage for Firebase requires a project on the Blaze (pay-as-you-go) plan with a billing account linked. Usage within the free quota still costs nothing. Until the team decides, Firestore works without it, but hazard photo upload (FR5.1) won't.
 
