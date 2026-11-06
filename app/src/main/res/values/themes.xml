@@ -5,9 +5,12 @@
         <item name="colorOnPrimary">@color/sand_yellow</item>
         <item name="colorSecondary">@color/navy_mid</item>
         <item name="colorOnSecondary">@color/sand_yellow</item>
+        <item name="colorSecondaryContainer">@color/navy_mid</item>
+        <item name="colorOnSecondaryContainer">@color/sand_yellow</item>
         <item name="android:colorBackground">@color/mist_blue</item>
         <item name="colorOnBackground">@color/navy_deep</item>
         <item name="colorSurface">@color/mist_blue</item>
+        <item name="colorSurfaceContainer">@color/mist_blue</item>
         <item name="colorOnSurface">@color/navy_deep</item>
         <item name="colorOnSurfaceVariant">@color/navy_mid</item>
         <item name="colorOutline">@color/navy_mid</item>

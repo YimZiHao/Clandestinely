@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Sign-in screen (FR6.1). Intan can restyle this to match the Figma design;
-     just keep the four IDs: button_google, button_guest, progress, text_error. -->
+<!-- Sign-in screen. Keep the four IDs: button_google, button_guest, progress, text_error. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#FFFFFF"
     android:padding="32dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in_title"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:text="Welcome to\nCuacaUM!"
+        android:textAppearance="?attr/textAppearanceHeadlineLarge"
+        android:textColor="?attr/colorOnBackground" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="40dp"
-        android:gravity="center"
-        android:text="@string/sign_in_subtitle"
-        android:textSize="16sp" />
-
-    <Button
-        android:id="@+id/button_google"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="56dp"
-        android:text="@string/sign_in_google" />
-
-    <Button
-        android:id="@+id/button_guest"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:text="Weather alerts, safety tips and sheltered routes around UM"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnBackground" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_guest"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
         android:minHeight="56dp"
-        android:text="@string/sign_in_guest" />
+        android:text="Continue as Guest"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textColor="@color/navy_deep"
+        app:backgroundTint="@color/mist_blue"
+        app:cornerRadius="28dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_google"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:minHeight="56dp"
+        android:text="Continue with Google"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textColor="@color/navy_deep"
+        app:backgroundTint="@color/mist_blue"
+        app:cornerRadius="28dp" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -54,7 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textColor="#C62828"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorError"
         android:visibility="gone" />
 
 </LinearLayout>
