@@ -29,7 +29,10 @@ test.beforeEach(async () => {
   await env.clearFirestore();
 });
 
-const db = (uid) => (uid ? env.authenticatedContext(uid).firestore() : env.unauthenticatedContext().firestore());
+// Signed in with Google unless guest = true (Firebase anonymous sign-in).
+const db = (uid, { guest = false } = {}) => (uid
+  ? env.authenticatedContext(uid, { firebase: { sign_in_provider: guest ? 'anonymous' : 'google.com' } }).firestore()
+  : env.unauthenticatedContext().firestore());
 
 function newUser(overrides = {}) {
   return {
@@ -233,14 +236,28 @@ test('tips: signed-in user can save and read a tip', async () => {
   await assertSucceeds(getDoc(doc(db('bob'), 'tips_cache', 'rain_afternoon_none')));
 });
 
+test('tips: guests can read but not write tips', async () => {
+  await env.withSecurityRulesDisabled((ctx) => setDoc(doc(ctx.firestore(), 'tips_cache', 'rain_afternoon_none'), {
+    ...newTip(), createdAt: Timestamp.now(),
+  }));
+  await assertSucceeds(getDoc(doc(db('guest1', { guest: true }), 'tips_cache', 'rain_afternoon_none')));
+  await assertFails(setDoc(doc(db('guest1', { guest: true }), 'tips_cache', 'rain_afternoon_none'), newTip()));
+});
+
+test("tips: the document ID must match the tip's states, time slot and sensitivities", async () => {
+  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'heat_morning_none'), newTip()));
+  await assertSucceeds(setDoc(doc(db('alice'), 'tips_cache', 'haze_sensitive+rain_evening_asthma'),
+    newTip({ states: ['haze_sensitive', 'rain'], timeSlot: 'evening', sensitivities: ['asthma'] })));
+});
+
 test('tips: signed-out users are blocked', async () => {
   await assertFails(setDoc(doc(db(null), 'tips_cache', 'rain_afternoon_none'), newTip()));
 });
 
 test('tips: rejects bad source, long text, or cache longer than 1 hour', async () => {
-  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'k'), newTip({ source: 'human' })));
-  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'k'), newTip({ text: 'x'.repeat(301) })));
-  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'k'),
+  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'rain_afternoon_none'), newTip({ source: 'human' })));
+  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'rain_afternoon_none'), newTip({ text: 'x'.repeat(301) })));
+  await assertFails(setDoc(doc(db('alice'), 'tips_cache', 'rain_afternoon_none'),
     newTip({ expiresAt: Timestamp.fromMillis(Date.now() + 3 * H) })));
 });
 

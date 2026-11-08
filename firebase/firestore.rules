@@ -114,12 +114,30 @@ service cloud.firestore {
 
     // ---------- tips_cache/{cacheKey} ----------
 
+    // The document ID must be built from the tip's own fields, exactly like
+    // TipCacheKey.build() in the app: states + "_" + timeSlot + "_" + sensitivities (or "none").
+    function tipKeyMatches(key, d) {
+      return (d.sensitivities.size() == 0
+               && key == d.states.join('+') + '_' + d.timeSlot + '_none')
+          || (d.sensitivities.size() > 0
+               && key == d.states.join('+') + '_' + d.timeSlot + '_' + d.sensitivities.join('+'));
+    }
+
+    function isGuest() {
+      return request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+
     match /tips_cache/{cacheKey} {
       allow read: if signedIn();
 
-      // Prototype: any signed-in user can save a tip, but it must be well formed
-      // and can only be cached for 1 hour (+5 minutes allowance).
+      // Signed-in users who aren't guests can save a tip. It must be well formed, saved under
+      // the ID that matches its states / time slot / sensitivities, and cached for at most
+      // 1 hour (+5 minutes allowance). Guests can read tips but not write them.
+      // Known limitation: a signed-in user could still write a misleading tip. Fully fixing that
+      // needs a Cloud Function to write the cache, which needs the Blaze plan.
       allow create, update: if signedIn()
+        && !isGuest()
+        && tipKeyMatches(cacheKey, request.resource.data)
         && request.resource.data.keys().hasOnly(['states', 'timeSlot', 'sensitivities', 'text',
                                                  'source', 'model', 'createdAt', 'expiresAt'])
         && request.resource.data.keys().hasAll(['states', 'timeSlot', 'sensitivities', 'text',

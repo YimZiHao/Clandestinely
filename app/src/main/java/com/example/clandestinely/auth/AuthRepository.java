@@ -24,12 +24,14 @@ import com.example.clandestinely.data.model.UserProfile;
 import com.example.clandestinely.data.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 /**
  * Firebase Auth for CuacaUM (FR6.1): sign in with Google, or continue as a guest.
@@ -85,7 +87,7 @@ public class AuthRepository {
                 throw new AuthException("Couldn't continue as guest. Check your internet connection.",
                         task.getException());
             }
-            return users.ensureProfile(task.getResult().getUser());
+            return ensureProfileOrSignOut(task.getResult().getUser());
         });
     }
 
@@ -106,8 +108,58 @@ public class AuthRepository {
                         if (e instanceof AuthException) throw e;
                         throw new AuthException("Google sign-in failed. Please try again.", e);
                     }
-                    return users.ensureProfile(task.getResult().getUser());
+                    return ensureProfileOrSignOut(task.getResult().getUser());
                 });
+    }
+
+    /**
+     * Call when the app opens and someone is already signed in. Makes sure their users/{uid}
+     * document exists before the app continues.
+     *
+     * - Profile exists (or was just created): the Task succeeds with the profile.
+     * - The phone is offline, so it can't check: the Task succeeds with null. The app can carry on
+     *   offline, and the check runs again next time the app opens.
+     * - Anything else goes wrong (e.g. the profile is rejected): the user is signed out and the
+     *   Task fails, so they see the sign-in screen instead of getting stuck without a profile.
+     */
+    public Task<UserProfile> resumeSession() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            return Tasks.forException(new AuthException("Please sign in."));
+        }
+        return users.ensureProfile(user).continueWithTask(task -> {
+            if (task.isSuccessful()) return task;
+            if (isOffline(task.getException())) return Tasks.forResult(null);
+            auth.signOut();
+            throw new AuthException("Your profile couldn't be loaded. Please sign in again.", task.getException());
+        });
+    }
+
+    /**
+     * After a successful Firebase sign-in, creates the user's profile. If that fails, signs them
+     * out again so they never end up signed in without a users/{uid} document.
+     */
+    private Task<UserProfile> ensureProfileOrSignOut(FirebaseUser user) {
+        return users.ensureProfile(user).continueWithTask(task -> {
+            if (task.isSuccessful()) return task;
+            auth.signOut();
+            throw new AuthException(
+                    "Couldn't set up your profile. Check your internet connection and try again.",
+                    task.getException());
+        });
+    }
+
+    /** True if the failure is because the phone can't reach Firestore. */
+    private static boolean isOffline(@Nullable Exception e) {
+        Throwable t = e;
+        while (t != null) {
+            if (t instanceof FirebaseFirestoreException
+                    && ((FirebaseFirestoreException) t).getCode() == FirebaseFirestoreException.Code.UNAVAILABLE) {
+                return true;
+            }
+            t = t.getCause();
+        }
+        return false;
     }
 
     /**

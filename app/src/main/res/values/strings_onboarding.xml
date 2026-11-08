@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Onboarding text (M6). Arieth can add the Bahasa Melayu versions in values-ms/strings_onboarding.xml. -->
+<resources>
+    <string name="onb_skip">Skip</string>
+    <string name="onb_next">Next</string>
+    <string name="onb_get_started">Get started</string>
+
+    <string name="onb_slide1_title">Know UM\'s weather</string>
+    <string name="onb_slide1_body">See live conditions on campus and get early alerts for rain, heat and haze.</string>
+    <string name="onb_slide2_title">Tips that fit you</string>
+    <string name="onb_slide2_body">Practical advice for the weather, your health and the time of day.</string>
+    <string name="onb_slide3_title">Safer walks on campus</string>
+    <string name="onb_slide3_body">Find shaded or covered routes, and steer clear of reported hazards.</string>
+
+    <string name="onb_perm_title">A couple of things</string>
+    <string name="onb_perm_subtitle">You can change these any time in your phone settings.</string>
+    <string name="onb_perm_location_title">Location</string>
+    <string name="onb_perm_location_body">Find routes from where you are and pin hazard reports.</string>
+    <string name="onb_perm_notif_title">Notifications</string>
+    <string name="onb_perm_notif_body">Get rain, heat and haze alerts before they hit.</string>
+    <string name="onb_allow">Allow</string>
+    <string name="onb_allowed">Allowed ✓</string>
+</resources>

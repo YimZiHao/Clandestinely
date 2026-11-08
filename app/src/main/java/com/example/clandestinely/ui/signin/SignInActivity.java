@@ -32,12 +32,6 @@ public class SignInActivity extends ComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Already signed in from last time: skip this screen.
-        if (authRepository.isSignedIn()) {
-            openHome();
-            return;
-        }
-
         setContentView(R.layout.activity_sign_in);
         googleButton = findViewById(R.id.button_google);
         guestButton = findViewById(R.id.button_guest);
@@ -46,6 +40,12 @@ public class SignInActivity extends ComponentActivity {
 
         googleButton.setOnClickListener(v -> signIn(authRepository.signInWithGoogle(this)));
         guestButton.setOnClickListener(v -> signIn(authRepository.signInAsGuest()));
+
+        // Signed in from last time: check the profile exists, then skip this screen.
+        // If the profile can't be loaded, resumeSession() signs the user out and we stay here.
+        if (authRepository.isSignedIn()) {
+            signIn(authRepository.resumeSession());
+        }
     }
 
     private void signIn(Task<UserProfile> signInTask) {

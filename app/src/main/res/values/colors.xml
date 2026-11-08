@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- CuacaUM palette -->
+    <color name="navy_deep">#102842</color>
+    <color name="navy_mid">#274568</color>
+    <color name="sand_yellow">#EAE0A9</color>
+    <color name="mist_blue">#D4DEE8</color>
+    <color name="brick_red">#AB4E4E</color>
+    <color name="forest_green">#346243</color>
+
 </resources>
