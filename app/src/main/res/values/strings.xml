@@ -2,7 +2,12 @@
     <string name="app_name">Clandestinely</string>
 
     <!-- M4 Route screen -->
-    <string name="route_summary">%1$d places · %2$d paths</string>
     <string name="route_load_failed">Could not load the campus map: %1$s</string>
     <string name="route_not_verified">not verified yet</string>
+    <string name="route_from">From</string>
+    <string name="route_to">To</string>
+    <string name="route_pick_hint">Choose where you\'re starting and where you\'re going</string>
+    <string name="route_result">Fastest: %1$s m · about %2$d min walk</string>
+    <string name="route_same_place">You\'re already there. Pick a different destination.</string>
+    <string name="route_not_found">No walking route found between these places</string>
 </resources>
