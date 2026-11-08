@@ -42,10 +42,12 @@ public class WeatherRepository {
     }
 
     public LiveData<CurrentWeather> getWeather() {
-        refresh();
         return weather;
     }
 
+    /***
+     * Calls both OpenMeteoApi and OpenMeteoAirQualityApi
+     */
     public void refresh() {
         CurrentWeather currentWeather = cache.load();
         if (currentWeather != null) {
@@ -126,7 +128,15 @@ public class WeatherRepository {
                 });
     }
 
-    // Builds the CurrentWeather, saves it to the cache and pushes it to the UI.
+    /***
+     * Builds the CurrentWeather, saves it to the cache and pushes it to the UI.
+     *
+     * @param temperature
+     * @param apparentTemperature
+     * @param humidity
+     * @param rainChance
+     * @param usAqi
+     */
     private void publish(double temperature, double apparentTemperature, int humidity,
                          int rainChance, int usAqi) {
         CurrentWeather current = new CurrentWeather(temperature, apparentTemperature, humidity,
