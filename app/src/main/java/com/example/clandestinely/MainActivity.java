@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.clandestinely.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             Fragment fragment;
             if (id == R.id.nav_forecast) {
-                fragment = PlaceholderFragment.newInstance("Forecast");
+                fragment = new HomeFragment();
             } else if (id == R.id.nav_route) {
                 fragment = PlaceholderFragment.newInstance("Route");
             } else if (id == R.id.nav_report) {

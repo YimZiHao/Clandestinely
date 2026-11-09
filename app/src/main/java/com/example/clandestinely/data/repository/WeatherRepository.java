@@ -26,7 +26,7 @@ public class WeatherRepository {
     private static final double LON = 101.6538;
     private static final String TIMEZONE = "Asia/Kuala_Lumpur";
     private static final String CURRENT_FIELDS =
-            "temperature_2m,apparent_temperature,relative_humidity_2m";
+            "temperature_2m,apparent_temperature,relative_humidity_2m, weather_code";
     private static final String AQI_FIELDS = "us_aqi";
     public static final int AQI_UNAVAILABLE = -1;
     private static final String HOURLY_FIELDS =
@@ -76,6 +76,7 @@ public class WeatherRepository {
                         List<String> time = forecast.hourly.time;
                         List<Integer> precipitationProbability = forecast.hourly.precipitation_probability;
                         String currentHour = forecast.current.time.substring(0, 13);
+                        int weatherCode = forecast.current.weather_code;
 
                         int rainChance = 0;                       // fallback if no match
                         for (int i = 0; i < time.size(); i++) {
@@ -100,20 +101,20 @@ public class WeatherRepository {
                                                 || airQualityResponse.current == null) {
                                             Log.e("WeatherRepository", "Bad AQI response: HTTP " + response.code());
                                             // weather is still good, so show it without fresh AQI
-                                            publish(temperature, apparentTemperature, humidity, finalRainChance, fallbackAqi());
+                                            publish(temperature, apparentTemperature, humidity, finalRainChance, fallbackAqi(), weatherCode);
                                             return;
                                         }
 
                                         // 200 OK
                                         int usAqi = airQualityResponse.current.us_aqi;
-                                        publish(temperature, apparentTemperature, humidity, finalRainChance, usAqi);
+                                        publish(temperature, apparentTemperature, humidity, finalRainChance, usAqi, weatherCode);
                                     }
 
                                     @Override
                                     public void onFailure(Call<AirQualityResponse> call, Throwable t) {
                                         // runs when there's no network / request failed
                                         Log.e("WeatherRepository", "Open Meteo Air Quality API request failed. Using fallback AQI.", t);
-                                        publish(temperature, apparentTemperature, humidity, finalRainChance, fallbackAqi());
+                                        publish(temperature, apparentTemperature, humidity, finalRainChance, fallbackAqi(), weatherCode);
                                     }
                                 });
 
@@ -138,9 +139,9 @@ public class WeatherRepository {
      * @param usAqi
      */
     private void publish(double temperature, double apparentTemperature, int humidity,
-                         int rainChance, int usAqi) {
+                         int rainChance, int usAqi, int weatherCode) {
         CurrentWeather current = new CurrentWeather(temperature, apparentTemperature, humidity,
-                rainChance, usAqi, System.currentTimeMillis());
+                rainChance, usAqi, weatherCode, System.currentTimeMillis());
         cache.save(current);
         weather.setValue(current);
     }

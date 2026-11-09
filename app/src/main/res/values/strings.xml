@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Clandestinely</string>
+
+    <!-- M1 Home -->
+    <string name="home_location">Universiti Malaya</string>
+    <string name="home_alerts_title">Alerts/Tips</string>
+    <string name="home_temperature">%1$.0f°C</string>
+    <string name="home_feels_like">Feels like %1$.0f°C</string>
+    <string name="home_humidity">Humidity %1$d%%</string>
+    <string name="home_rain_chance">Rain chance %1$d%%</string>
+    <string name="home_aqi">AQI %1$d</string>
+    <string name="home_aqi_unavailable">AQI unavailable</string>
+    <string name="home_last_updated">Updated %1$s</string>
+    <string name="summary_normal">☀️ No weather warnings right now</string>
+    <string name="summary_rain">🌧️ Rain likely this hour</string>
+    <string name="summary_thunderstorm">⛈️ Thunderstorm on campus</string>
+    <string name="summary_heat">🥵 Very hot outside</string>
+    <string name="summary_haze_sensitive">😷 Haze: unhealthy for sensitive groups</string>
+    <string name="summary_haze_unhealthy">🌫️ Haze: unhealthy air</string>
 </resources>

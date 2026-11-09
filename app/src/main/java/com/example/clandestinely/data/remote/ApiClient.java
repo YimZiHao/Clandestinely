@@ -20,7 +20,7 @@ public class ApiClient {
 
     public static synchronized OpenMeteoAirQualityApi getHazeApi() {
         if (airQualityApi == null) {
-            airQualityApi = build(FORECAST_BASE_URL).create(OpenMeteoAirQualityApi.class);
+            airQualityApi = build(AIR_QUALITY_BASE_URL).create(OpenMeteoAirQualityApi.class);
         }
         return airQualityApi;
     }
