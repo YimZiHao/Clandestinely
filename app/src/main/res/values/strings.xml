@@ -1,6 +1,43 @@
 <resources>
     <string name="app_name">Clandestinely</string>
 
+    <!-- M1 Home -->
+    <string name="home_location">Universiti Malaya</string>
+    <string name="home_alerts_title">Alerts/Tips</string>
+    <string name="home_temperature">%1$.0f°C</string>
+    <string name="home_feels_like">Feels like %1$.0f°C</string>
+    <string name="home_humidity">Humidity %1$d%%</string>
+    <string name="home_rain_chance">Rain chance %1$d%%</string>
+    <string name="home_aqi">AQI %1$d</string>
+    <string name="home_aqi_unavailable">AQI unavailable</string>
+    <string name="home_last_updated">Updated %1$s</string>
+    <string name="summary_normal">☀️ No weather warnings right now</string>
+    <string name="summary_rain">🌧️ Rain likely this hour</string>
+    <string name="summary_thunderstorm">⛈️ Thunderstorm on campus</string>
+    <string name="summary_heat">🥵 Very hot outside</string>
+    <string name="summary_haze_sensitive">😷 Haze: unhealthy for sensitive groups</string>
+    <string name="summary_haze_unhealthy">🌫️ Haze: unhealthy air</string>
+
+    <!-- M1 Forecast -->
+    <string name="forecast_location">Kuala Lumpur</string>
+    <string name="forecast_hourly">Hourly Forecast</string>
+    <string name="forecast_daily">Daily Forecast</string>
+    <string name="forecast_hour">%1$s</string>
+    <string name="forecast_temperature">%1$.0f°</string>
+    <string name="forecast_feels_like">Feels %1$.0f°</string>
+  
+    <!-- M1 Forecast cards -->
+    <string name="emoji_normal">☀️</string>
+    <string name="emoji_rain">🌧️</string>
+    <string name="emoji_thunderstorm">⛈️</string>
+    <string name="emoji_heat">🥵</string>
+    <string name="emoji_haze_sensitive">😷</string>
+    <string name="emoji_haze_unhealthy">🌫️</string>
+    <string name="emoji_air_good">😊</string>
+    <string name="aqicard_haze_sensitive">unhealthy for sensitive groups</string>
+    <string name="aqicard_haze_unhealthy">unhealthy air</string>
+    <string name="aqicard_haze_healthy">healthy air</string>
+  
     <!-- M4 Route screen -->
     <string name="route_summary">%1$d places · %2$d paths</string>
     <string name="route_load_failed">Could not load the campus map: %1$s</string>
