@@ -25,6 +25,7 @@
     <string name="forecast_hour">%1$s</string>
     <string name="forecast_temperature">%1$.0f°</string>
     <string name="forecast_feels_like">Feels %1$.0f°</string>
+  
     <!-- M1 Forecast cards -->
     <string name="emoji_normal">☀️</string>
     <string name="emoji_rain">🌧️</string>
@@ -36,4 +37,9 @@
     <string name="aqicard_haze_sensitive">unhealthy for sensitive groups</string>
     <string name="aqicard_haze_unhealthy">unhealthy air</string>
     <string name="aqicard_haze_healthy">healthy air</string>
+  
+    <!-- M4 Route screen -->
+    <string name="route_summary">%1$d places · %2$d paths</string>
+    <string name="route_load_failed">Could not load the campus map: %1$s</string>
+    <string name="route_not_verified">not verified yet</string>
 </resources>

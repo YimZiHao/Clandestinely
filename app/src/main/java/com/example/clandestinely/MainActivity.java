@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.clandestinely.ui.forecast.ForecastFragment;
 import com.example.clandestinely.ui.home.HomeFragment;
+import com.example.clandestinely.ui.route.RouteFragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.nav_forecast) {
                 fragment = new ForecastFragment();
             } else if (id == R.id.nav_route) {
-                fragment = PlaceholderFragment.newInstance("Route");
+                fragment = new RouteFragment();   // M4 Route screen
             } else if (id == R.id.nav_report) {
                 fragment = PlaceholderFragment.newInstance("Report");
             } else {

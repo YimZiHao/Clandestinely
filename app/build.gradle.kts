@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+    implementation(libs.osmdroid.android)
     implementation(libs.viewpager2) // onboarding slides
     testImplementation(libs.junit)
     testImplementation("org.json:json:20240303") // lets the unit tests read rule_tips_v1.json
