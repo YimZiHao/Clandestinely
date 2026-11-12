@@ -34,9 +34,16 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment())
                     .commit();
+            bottomNav.getMenu().setGroupCheckable(0, true, false);   // allow unchecking
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                bottomNav.getMenu().getItem(i).setChecked(false);    // no tab selected
+            }
+            bottomNav.getMenu().setGroupCheckable(0, true, true);    // back to one-at-a-time
         }
         bottomNav.setOnItemReselectedListener(item -> {
             if (item.getItemId() == R.id.nav_forecast) {
+                bottomNav.getMenu().setGroupCheckable(0, true, true);
+                item.setChecked(true);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, new ForecastFragment())
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNav.setOnItemSelectedListener(item -> {
+            bottomNav.getMenu().setGroupCheckable(0, true, true);
             int id = item.getItemId();
             Fragment fragment;
             if (id == R.id.nav_forecast) {
@@ -81,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
                 // Reset the highlight to the start state without firing the tab listener,
                 // so tapping Forecast from Home still opens it (via the reselect listener).
                 bottomNav.getMenu().findItem(R.id.nav_forecast).setChecked(true);
+                bottomNav.getMenu().setGroupCheckable(0, true, false);   // allow unchecking
+                for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                    bottomNav.getMenu().getItem(i).setChecked(false);    // no tab selected
+                }
+                bottomNav.getMenu().setGroupCheckable(0, true, true);    // back to one-at-a-time
             }
         });
     }
