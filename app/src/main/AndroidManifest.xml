@@ -40,6 +40,11 @@
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.Clandestinely" />
+
+        <activity
+            android:name=".ui.tips.TipsActivity"
+            android:exported="false"
+            android:label="@string/tips_title" />
     </application>
 
 </manifest>

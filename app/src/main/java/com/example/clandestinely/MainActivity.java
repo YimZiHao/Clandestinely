@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.clandestinely.ui.route.RouteFragment;
+import com.example.clandestinely.ui.tips.TipCardFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             Fragment fragment;
             if (id == R.id.nav_forecast) {
-                fragment = PlaceholderFragment.newInstance("Forecast");
+                fragment = new TipCardFragment(); // M3 tip card; temporary until the Forecast screen exists
             } else if (id == R.id.nav_route) {
                 fragment = new RouteFragment();   // M4 Route screen
             } else if (id == R.id.nav_report) {
