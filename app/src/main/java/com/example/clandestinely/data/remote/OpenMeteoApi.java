@@ -14,7 +14,9 @@ public interface OpenMeteoApi {
             @Query("longitude") double lon,
             @Query("current") String currentFields,
             @Query("hourly") String hourlyFields,
+            @Query("daily") String dailyFields,        // 7 days by default
             @Query("timezone") String timezone,        // "Asia/Kuala_Lumpur"
-            @Query("forecast_hours") int forecastHours // 24
+            @Query("forecast_hours") int forecastHours, // 24
+            @Query("past_hours") int pastHours          // hours before now, for the forecast row
     );
 }

@@ -17,4 +17,23 @@
     <string name="summary_heat">🥵 Very hot outside</string>
     <string name="summary_haze_sensitive">😷 Haze: unhealthy for sensitive groups</string>
     <string name="summary_haze_unhealthy">🌫️ Haze: unhealthy air</string>
+
+    <!-- M1 Forecast -->
+    <string name="forecast_location">Kuala Lumpur</string>
+    <string name="forecast_hourly">Hourly Forecast</string>
+    <string name="forecast_daily">Daily Forecast</string>
+    <string name="forecast_hour">%1$s</string>
+    <string name="forecast_temperature">%1$.0f°</string>
+    <string name="forecast_feels_like">Feels %1$.0f°</string>
+    <!-- M1 Forecast cards -->
+    <string name="emoji_normal">☀️</string>
+    <string name="emoji_rain">🌧️</string>
+    <string name="emoji_thunderstorm">⛈️</string>
+    <string name="emoji_heat">🥵</string>
+    <string name="emoji_haze_sensitive">😷</string>
+    <string name="emoji_haze_unhealthy">🌫️</string>
+    <string name="emoji_air_good">😊</string>
+    <string name="aqicard_haze_sensitive">unhealthy for sensitive groups</string>
+    <string name="aqicard_haze_unhealthy">unhealthy air</string>
+    <string name="aqicard_haze_healthy">healthy air</string>
 </resources>

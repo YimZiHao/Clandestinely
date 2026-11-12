@@ -12,7 +12,9 @@ public interface OpenMeteoAirQualityApi {
             @Query("latitude") double lat,
             @Query("longitude") double lon,
             @Query("current") String currentFields,
-            @Query("timezone") String timezone
+            @Query("hourly") String hourlyFields,       // "us_aqi" for the forecast rows
+            @Query("timezone") String timezone,
+            @Query("forecast_days") int forecastDays    // AQI has values for ~5 days only
     );
 
 }
