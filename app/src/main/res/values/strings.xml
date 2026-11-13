@@ -42,4 +42,27 @@
     <string name="route_summary">%1$d places · %2$d paths</string>
     <string name="route_load_failed">Could not load the campus map: %1$s</string>
     <string name="route_not_verified">not verified yet</string>
+
+    <string name="report_title">Report a hazard</string>
+    <string name="report_category_label">Category</string>
+    <string name="report_add_photo">Add photo</string>
+    <string name="report_get_location">Use my current location</string>
+    <string name="report_location_fetching">Getting your location…</string>
+    <string name="report_location_result">Location: %1$.5f, %2$.5f</string>
+    <string name="report_location_failed">Could not get location. Check that Location is turned on.</string>
+    <string name="report_location_denied">Location permission denied</string>
+    <string name="report_location_none">Location not set yet</string>
+    <string name="report_submit">Submit report</string>
+    <string name="report_need_login">Please sign in to report a hazard</string>
+    <string name="report_need_location">Tap "Use my current location" first</string>
+    <string name="report_submitting">Submitting…</string>
+    <string name="report_submit_success">Report submitted. Thank you!</string>
+    <string name="report_submit_failed">Could not submit report: %1$s</string>
+
+    <string-array name="hazard_categories">
+        <item>Flood</item>
+        <item>Fallen tree</item>
+        <item>Blocked drain</item>
+        <item>Other</item>
+    </string-array>
 </resources>
