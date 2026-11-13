@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.clandestinely.ui.report.ReportHazardFragment;
 import com.example.clandestinely.ui.route.RouteFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_route) {
                 fragment = new RouteFragment();   // M4 Route screen
             } else if (id == R.id.nav_report) {
-                fragment = PlaceholderFragment.newInstance("Report");
+                fragment = ReportHazardFragment.newInstance();
             } else {
                 fragment = PlaceholderFragment.newInstance("Profile");
             }
