@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.osmdroid.android)
     implementation(libs.viewpager2) // onboarding slides
+    implementation(libs.androidx.work) // M2 background alert check
     testImplementation(libs.junit)
     testImplementation("org.json:json:20240303") // lets the unit tests read rule_tips_v1.json
     androidTestImplementation(libs.espresso.core)

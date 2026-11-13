@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.clandestinely.alerts.AlertCheckWorker;
 import com.example.clandestinely.ui.forecast.ForecastFragment;
 import com.example.clandestinely.ui.home.HomeFragment;
 import com.example.clandestinely.ui.route.RouteFragment;
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // M2: start the background weather alert check (only runs once; KEEP).
+        AlertCheckWorker.schedule(this);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         if (savedInstanceState == null) {

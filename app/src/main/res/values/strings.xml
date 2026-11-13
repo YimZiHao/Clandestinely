@@ -38,6 +38,13 @@
     <string name="aqicard_haze_unhealthy">unhealthy air</string>
     <string name="aqicard_haze_healthy">healthy air</string>
   
+    <!-- M2 Alerts (notification wording: placeholder, team to confirm) -->
+    <string name="alert_channel_name">Weather alerts</string>
+    <string name="alert_channel_description">Rain, thunderstorm, heat and haze warnings for UM campus</string>
+    <string name="alert_title">Weather alert</string>
+    <string name="alert_rain">🌧️ Rain likely within %1$d minutes</string>
+    <string name="alert_thunderstorm">⛈️ Thunderstorm expected within %1$d minutes</string>
+
     <!-- M4 Route screen -->
     <string name="route_summary">%1$d places · %2$d paths</string>
     <string name="route_load_failed">Could not load the campus map: %1$s</string>

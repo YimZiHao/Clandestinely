@@ -28,9 +28,10 @@ public class WeatherRepository {
 
     private final OpenMeteoApi weatherApi;
     private final OpenMeteoAirQualityApi hazeApi;
-    private static final double LAT = 3.1209;
-    private static final double LON = 101.6538;
-    private static final String TIMEZONE = "Asia/Kuala_Lumpur";
+    // Public so the M2 AlertCheckWorker checks the same place.
+    public static final double LAT = 3.1209;
+    public static final double LON = 101.6538;
+    public static final String TIMEZONE = "Asia/Kuala_Lumpur";
     private static final String CURRENT_FIELDS =
             "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code";
     private static final String AQI_FIELDS = "us_aqi";
