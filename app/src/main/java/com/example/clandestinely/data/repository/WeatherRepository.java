@@ -77,6 +77,7 @@ public class WeatherRepository {
      * Calls both OpenMeteoApi and OpenMeteoAirQualityApi
      */
     public void refresh() {
+        Log.d("WX", "refresh() cache=" + (cache.load() != null));
         CurrentWeather currentWeather = cache.load();
         if (currentWeather != null) {
             weather.setValue(currentWeather); //NFR1 Instant Display
@@ -89,6 +90,7 @@ public class WeatherRepository {
                                            Response<ForecastResponse> response) {
                         // runs when the server replies
                         ForecastResponse forecast = response.body();
+                        Log.d("WX", "forecast reply HTTP " + response.code());
 
                         // 400 server error
                         if (!response.isSuccessful() || forecast == null
@@ -124,6 +126,7 @@ public class WeatherRepository {
                         // call Open Meteo Air Quality API
                         int finalRainChance = rainChance;
                         int finalCurrentIndex = currentIndex;
+                        Log.d("WX", "AQI request sent");
                         hazeApi.getAirQuality(LAT, LON, AQI_FIELDS, AQI_HOURLY_FIELDS, TIMEZONE, FORECAST_DAYS)
                                 .enqueue(new Callback<AirQualityResponse>() {
                                     @Override
@@ -131,13 +134,15 @@ public class WeatherRepository {
 
                                         // runs when the server replies
                                          AirQualityResponse airQualityResponse = response.body();
-
+                                        Log.d("WX", "AQI reply HTTP " + response.code());
                                         // 400 server error
                                         if (!response.isSuccessful() || airQualityResponse == null
                                                 || airQualityResponse.current == null) {
                                             Log.e("WeatherRepository", "Bad AQI response: HTTP " + response.code());
                                             // weather is still good, so show it without fresh AQI
                                             publish(temperature, apparentTemperature, humidity, finalRainChance, fallbackAqi(), weatherCode);
+
+
                                             return;
                                         }
 
@@ -156,6 +161,7 @@ public class WeatherRepository {
                                     @Override
                                     public void onFailure(Call<AirQualityResponse> call, Throwable t) {
                                         // runs when there's no network / request failed
+                                        Log.d("WX", "AQI failed: " + t);
                                         Log.e("WeatherRepository", "Open Meteo Air Quality API request failed. Using fallback AQI.", t);
                                         publish(temperature, apparentTemperature, humidity, finalRainChance, fallbackAqi(), weatherCode);
                                     }
@@ -183,6 +189,7 @@ public class WeatherRepository {
      */
     private void publish(double temperature, double apparentTemperature, int humidity,
                          int rainChance, int usAqi, int weatherCode) {
+        Log.d("WX", "publish() temp=" + temperature + " aqi=" + usAqi);
         CurrentWeather current = new CurrentWeather(temperature, apparentTemperature, humidity,
                 rainChance, usAqi, weatherCode, System.currentTimeMillis());
         cache.save(current);

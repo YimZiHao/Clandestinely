@@ -1,6 +1,7 @@
 package com.example.clandestinely.ui.home;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -23,6 +24,7 @@ public class WeatherViewModel extends AndroidViewModel {
         super(application);
         weatherRepository = new WeatherRepository(ApiClient.getWeatherApi(),
                 ApiClient.getHazeApi(), new WeatherCache(application));
+        Log.d("WX", "VM created " + System.identityHashCode(this));
         weatherRepository.refresh();
     }
 

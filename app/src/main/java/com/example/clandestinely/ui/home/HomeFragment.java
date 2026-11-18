@@ -3,6 +3,7 @@ package com.example.clandestinely.ui.home;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void showWeather(CurrentWeather w) {
+
+        Log.d("WX", "showWeather w=" + (w == null ? "null" : w.temperature));
         if (w == null) return;
 
         textTemperature.setText(getString(R.string.home_temperature, w.temperature));
@@ -74,6 +77,9 @@ public class HomeFragment extends Fragment {
         CurrentWeatherStates.update(states);   // M3: tips follow the live weather
         String state = WeatherClassifier.mostSevere(states);
         textSummary.setText(summaryFor(state));
+
+        Log.d("WX", "temp text='" + textTemperature.getText() + "' shown=" + textTemperature.isShown()
+                + " size=" + textTemperature.getWidth() + "x" + textTemperature.getHeight());
     }
 
     @StringRes
