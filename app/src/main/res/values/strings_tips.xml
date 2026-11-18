@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tips screen and Home tip card text (M3). Arieth can add Bahasa Melayu in values-ms/strings_tips.xml. -->
+<resources>
+    <string name="tips_title">Safety tips</string>
+    <string name="tips_back">Back</string>
+    <string name="tips_card_title">Tip for you</string>
+    <string name="tips_see_all">See all tips ›</string>
+    <string name="tips_right_now">Right now</string>
+    <string name="tips_top">Top tips for you</string>
+    <string name="tips_more">More tips for this weather</string>
+    <string name="tips_none">No tips right now.</string>
+    <string name="tips_note_live">Built-in safety tips. These work offline.</string>
+    <string name="tips_note_waiting">Live weather is not connected yet, so these are general tips.</string>
+    <string name="tips_meta_for_you">For you · %1$s</string>
+    <string name="tips_preview_title">Preview weather (testing only)</string>
+    <string name="tips_preview_hint">Tick weather to see which tips show. Only visible in debug builds.</string>
+
+    <!-- Weather states -->
+    <string name="state_thunderstorm">Thunderstorm</string>
+    <string name="state_haze_unhealthy">Unhealthy haze</string>
+    <string name="state_rain">Rain</string>
+    <string name="state_heat">Heat</string>
+    <string name="state_haze_sensitive">Haze</string>
+    <string name="state_uv">High UV</string>
+    <string name="state_normal">Normal</string>
+
+    <!-- Sensitivities -->
+    <string name="sensitivity_asthma">Asthma</string>
+    <string name="sensitivity_heat">Heat-sensitive</string>
+    <string name="sensitivity_uv">UV-sensitive</string>
+    <string name="sensitivity_mobility">Limited mobility</string>
+</resources>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- M1 Daily forecast screen. Same top as forecast_fragment.xml; the row shows 7 days. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/daily_forecast_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/navy_deep"
+    android:padding="16dp">
+
+    <!-- Big outer card: fills the screen above the bottom nav. -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_daily_outer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_home_outer"
+            android:backgroundTint="@color/navy_deep"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/TVDailyLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/home_location"
+                android:textAppearance="?attr/textAppearanceHeadlineLarge"
+                android:textColor="@color/sand_yellow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Goes back to the hourly forecast (ForecastFragment). -->
+            <Button
+                android:id="@+id/buttonHourly"
+                android:layout_width="175dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="32dp"
+                android:padding="0dp"
+                android:text="@string/forecast_hourly"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TVDailyLocation" />
+
+            <Button
+                android:id="@+id/buttonDaily"
+                android:layout_width="175dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="32dp"
+                android:padding="0dp"
+                android:text="@string/forecast_daily"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TVDailyLocation" />
+
+            <!-- Daily row: scrolls sideways, one column per day (7 days). -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_daily_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/navy_mid"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonHourly"
+                app:strokeWidth="0dp">
+
+                <!-- Each column is item_forecast_column.xml (day, date, average temp, average feels like, emoji). -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVForecastDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="7"
+                    tools:listitem="@layout/item_forecast_column" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- AQI card: same ids as forecast_fragment.xml, filled by ForecastFragment.showAqiAndRain(). -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_daily_middle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/navy_mid"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toTopOf="@id/card_daily_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_daily_list"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TVAqiEmoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="40sp"
+                        tools:text="@string/emoji_haze_sensitive" />
+
+                    <TextView
+                        android:id="@+id/TVForecastAqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="@color/sand_yellow"
+                        tools:text="AQI 62" />
+
+                    <TextView
+                        android:id="@+id/TVAqiSummary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="@color/sand_yellow"
+                        tools:text="@string/aqicard_haze_healthy" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Rain card: same ids as forecast_fragment.xml. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_daily_bottom"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/navy_mid"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_daily_middle"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TVRainEmoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="40sp"
+                        tools:text="@string/emoji_rain" />
+
+                    <TextView
+                        android:id="@+id/TVForecastRain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="@color/sand_yellow"
+                        tools:text="Rain chance 40%" />
+
+                    <TextView
+                        android:id="@+id/TVForecastHumidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="@color/sand_yellow"
+                        tools:text="Humidity 78%" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

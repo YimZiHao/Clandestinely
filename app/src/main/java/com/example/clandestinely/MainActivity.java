@@ -3,11 +3,17 @@ package com.example.clandestinely;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+
+import com.example.clandestinely.alerts.AlertCheckWorker;
+import com.example.clandestinely.ui.forecast.ForecastFragment;
+import com.example.clandestinely.ui.home.HomeFragment;
+import com.example.clandestinely.ui.route.RouteFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,14 +31,39 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // M2: start the background weather alert check (only runs once; KEEP).
+        AlertCheckWorker.schedule(this);
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
+            bottomNav.getMenu().setGroupCheckable(0, true, false);   // allow unchecking
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                bottomNav.getMenu().getItem(i).setChecked(false);    // no tab selected
+            }
+            bottomNav.getMenu().setGroupCheckable(0, true, true);    // back to one-at-a-time
+        }
+        bottomNav.setOnItemReselectedListener(item -> {
+            if (item.getItemId() == R.id.nav_forecast) {
+                bottomNav.getMenu().setGroupCheckable(0, true, true);
+                item.setChecked(true);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ForecastFragment())
+                        .commit();
+            }
+        });
         bottomNav.setOnItemSelectedListener(item -> {
+            bottomNav.getMenu().setGroupCheckable(0, true, true);
             int id = item.getItemId();
             Fragment fragment;
             if (id == R.id.nav_forecast) {
-                fragment = PlaceholderFragment.newInstance("Forecast");
+                fragment = new ForecastFragment();
             } else if (id == R.id.nav_route) {
-                fragment = PlaceholderFragment.newInstance("Route");
+                fragment = new RouteFragment();   // M4 Route screen
             } else if (id == R.id.nav_report) {
                 fragment = PlaceholderFragment.newInstance("Report");
             } else {
@@ -45,8 +76,31 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        if (savedInstanceState == null) {
-            bottomNav.setSelectedItemId(R.id.nav_forecast);
-        }
+        // Back: from any tab, return to Home. On Home, Back closes the app as normal.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Fragment current = getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_container);
+                if (current instanceof HomeFragment) {
+                    setEnabled(false);                          // let the system handle it
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                    return;
+                }
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new HomeFragment())
+                        .commit();
+                // Reset the highlight to the start state without firing the tab listener,
+                // so tapping Forecast from Home still opens it (via the reselect listener).
+                bottomNav.getMenu().findItem(R.id.nav_forecast).setChecked(true);
+                bottomNav.getMenu().setGroupCheckable(0, true, false);   // allow unchecking
+                for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                    bottomNav.getMenu().getItem(i).setChecked(false);    // no tab selected
+                }
+                bottomNav.getMenu().setGroupCheckable(0, true, true);    // back to one-at-a-time
+            }
+        });
     }
 }
