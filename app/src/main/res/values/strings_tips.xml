@@ -9,9 +9,13 @@
     <string name="tips_top">Top tips for you</string>
     <string name="tips_more">More tips for this weather</string>
     <string name="tips_none">No tips right now.</string>
-    <string name="tips_note_live">Built-in safety tips. These work offline.</string>
+    <string name="tips_note_live">Built-in safety tips work offline. A smart tip shows when you are online.</string>
     <string name="tips_note_waiting">Live weather is not connected yet, so these are general tips.</string>
     <string name="tips_meta_for_you">For you · %1$s</string>
+    <string name="tips_source_ai">Smart tip (AI)</string>
+    <string name="tips_source_rule">Built-in tip</string>
+    <string name="tips_ai_title">Smart tip</string>
+    <string name="tips_ai_disclaimer">Written by AI from the forecast. Always check the sky and follow official warnings.</string>
     <string name="tips_preview_title">Preview weather (testing only)</string>
     <string name="tips_preview_hint">Tick weather to see which tips show. Only visible in debug builds.</string>
 

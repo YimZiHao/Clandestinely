@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment {
 
         // 3. Update the screen whenever new weather arrives
         viewModel.getWeather().observe(getViewLifecycleOwner(), this::showWeather);
+        viewModel.getHourly().observe(getViewLifecycleOwner(), CurrentWeatherStates::updateHourly); // M3: next hours for the Gemini tip
     }
 
     private void showWeather(CurrentWeather w) {
@@ -71,7 +72,7 @@ public class HomeFragment extends Fragment {
         textLastUpdated.setText(getString(R.string.home_last_updated, time));
 
         List<String> states = WeatherClassifier.classify(w);
-        CurrentWeatherStates.update(states);   // M3: tips follow the live weather
+        CurrentWeatherStates.update(states, w);   // M3: tips follow the live weather (numbers go to Gemini)
         String state = WeatherClassifier.mostSevere(states);
         textSummary.setText(summaryFor(state));
     }

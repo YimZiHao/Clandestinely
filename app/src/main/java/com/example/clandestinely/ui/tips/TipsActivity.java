@@ -40,6 +40,8 @@ public class TipsActivity extends AppCompatActivity {
     private LinearLayout topList;
     private LinearLayout moreList;
     private TextView moreHeader;
+    private View aiSection;
+    private TextView aiText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class TipsActivity extends AppCompatActivity {
         topList = findViewById(R.id.tips_top_list);
         moreList = findViewById(R.id.tips_more_list);
         moreHeader = findViewById(R.id.tips_more_header);
+        aiSection = findViewById(R.id.tips_ai_section);
+        aiText = findViewById(R.id.tips_ai_text);
 
         if (isDebugBuild()) {
             setUpPreview();
@@ -88,6 +92,14 @@ public class TipsActivity extends AppCompatActivity {
         }
 
         note.setText(s.liveWeather ? R.string.tips_note_live : R.string.tips_note_waiting);
+
+        // Week 7: smart tip (Gemini / tips_cache). Hidden when we fall back to rule tips.
+        if (s.aiTip != null) {
+            aiText.setText(s.aiTip.text);
+            aiSection.setVisibility(View.VISIBLE);
+        } else {
+            aiSection.setVisibility(View.GONE);
+        }
 
         fill(topList, s.topTips, s.language);
         fill(moreList, s.moreTips, s.language);

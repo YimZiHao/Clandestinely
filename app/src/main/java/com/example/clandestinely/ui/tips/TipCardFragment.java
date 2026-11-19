@@ -40,6 +40,7 @@ public class TipCardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         TextView stateText = view.findViewById(R.id.tip_card_state);
         TextView tipText = view.findViewById(R.id.tip_card_text);
+        TextView sourceText = view.findViewById(R.id.tip_card_source);
 
         view.findViewById(R.id.tip_card).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), TipsActivity.class)));
@@ -47,9 +48,15 @@ public class TipCardFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(TipsViewModel.class);
         viewModel.getState().observe(getViewLifecycleOwner(), s -> {
             stateText.setText(WeatherStateLabels.join(requireContext(), s.states));
-            tipText.setText(s.topTips.isEmpty()
-                    ? getString(R.string.tips_none)
-                    : s.topTips.get(0).text(s.language));
+            if (s.aiTip != null) {                      // Week 7: smart tip from Gemini / tips_cache
+                tipText.setText(s.aiTip.text);
+                sourceText.setText(R.string.tips_source_ai);
+            } else {                                    // fallback: rule-based tip
+                tipText.setText(s.topTips.isEmpty()
+                        ? getString(R.string.tips_none)
+                        : s.topTips.get(0).text(s.language));
+                sourceText.setText(R.string.tips_source_rule);
+            }
         });
     }
 

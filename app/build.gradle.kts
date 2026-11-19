@@ -47,10 +47,17 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
+
+    // M3 smart tips: Gemini through Firebase AI Logic, protected by App Check
+    implementation("com.google.firebase:firebase-ai")
+    implementation("com.google.firebase:firebase-appcheck-debug")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+    implementation("com.google.guava:guava:31.0.1-android")      // ListenableFuture for Java
+    implementation("org.reactivestreams:reactive-streams:1.0.4") // needed by the Java API
 
     // Google sign-in
     implementation("androidx.credentials:credentials:1.3.0")
