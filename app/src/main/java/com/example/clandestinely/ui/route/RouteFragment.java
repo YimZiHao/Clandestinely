@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.clandestinely.R;
+import com.example.clandestinely.data.repository.HazardRepository;
+import com.example.clandestinely.ui.report.HazardMarkerManager;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.config.IConfigurationProvider;
@@ -33,6 +35,7 @@ public class RouteFragment extends Fragment {
     private static final String USER_AGENT = "CuacaUM/0.1 (Universiti Malaya WIA2007 student project)";
 
     private MapView mapView;
+    private HazardMarkerManager hazardMarkers;
 
     public RouteFragment() {
         super(R.layout.fragment_route);
@@ -63,12 +66,14 @@ public class RouteFragment extends Fragment {
         mapView.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
         mapView.getController().setZoom(START_ZOOM);
         mapView.getController().setCenter(UM_CENTRE);
+        hazardMarkers = new HazardMarkerManager(requireContext(), mapView, new HazardRepository());
 
         RouteViewModel viewModel = new ViewModelProvider(this).get(RouteViewModel.class);
 
         viewModel.getGraph().observe(getViewLifecycleOwner(), graph -> {
             progress.setVisibility(View.GONE);
             CampusMapRenderer.draw(mapView, graph);
+            hazardMarkers.refresh();
             summary.setText(getString(R.string.route_summary,
                     graph.getPlaces().size(), graph.getEdges().size()));
             summaryCard.setVisibility(View.VISIBLE);
@@ -79,6 +84,18 @@ public class RouteFragment extends Fragment {
             errorText.setText(getString(R.string.route_load_failed, message));
             errorText.setVisibility(View.VISIBLE);
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (hazardMarkers != null) hazardMarkers.start();
+    }
+
+    @Override
+    public void onStop() {
+        if (hazardMarkers != null) hazardMarkers.stop();
+        super.onStop();
     }
 
     @Override
@@ -103,6 +120,7 @@ public class RouteFragment extends Fragment {
             mapView.onDetach();
             mapView = null;
         }
+        hazardMarkers = null;
         super.onDestroyView();
     }
 }
