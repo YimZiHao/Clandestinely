@@ -1,6 +1,7 @@
 package com.example.clandestinely;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -11,13 +12,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.clandestinely.alerts.AlertCheckWorker;
+import com.example.clandestinely.data.repository.UserRepository;
 import com.example.clandestinely.ui.forecast.ForecastFragment;
 import com.example.clandestinely.ui.home.HomeFragment;
 import com.example.clandestinely.ui.route.RouteFragment;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         // M2: start the background weather alert check (only runs once; KEEP).
         AlertCheckWorker.schedule(this);
+
+        // M2: start the background weather alert check (only runs once; KEEP).
+        AlertCheckWorker.schedule(this);
+        // M2: register this phone for push alerts.
+        saveFcmToken();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         if (savedInstanceState == null) {
@@ -102,5 +113,19 @@ public class MainActivity extends AppCompatActivity {
                 bottomNav.getMenu().setGroupCheckable(0, true, true);    // back to one-at-a-time
             }
         });
+    }
+
+    /** M2: make sure this phone's push token is saved under the signed-in user. */
+    private void saveFcmToken() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnSuccessListener(token -> {
+                    Log.d(TAG, "FCM token: " + token);       // copy this for send-test-alert.js
+                    new UserRepository().addFcmToken(user.getUid(), token)
+                            .addOnFailureListener(e -> Log.w(TAG, "Couldn't save FCM token.", e));
+                })
+                .addOnFailureListener(e -> Log.w(TAG, "Couldn't get FCM token.", e));
     }
 }

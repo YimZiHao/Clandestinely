@@ -1,15 +1,10 @@
 package com.example.clandestinely.alerts;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
@@ -18,8 +13,6 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.clandestinely.MainActivity;
-import com.example.clandestinely.R;
 import com.example.clandestinely.data.model.AirQualityResponse;
 import com.example.clandestinely.data.model.AlertPrefs;
 import com.example.clandestinely.data.model.CurrentWeather;
@@ -57,8 +50,6 @@ public class AlertCheckWorker extends Worker {
 
     private static final String TAG = "AlertCheckWorker";
     public static final String UNIQUE_NAME = "alert_check";
-    public static final String CHANNEL_ID = "weather_alerts";
-    private static final int NOTIFICATION_ID = 2001;
     private static final long REPEAT_MINUTES = 15;            // WorkManager's minimum
 
     private static final String PREFS = "alert_check";
@@ -152,7 +143,7 @@ public class AlertCheckWorker extends Worker {
             Log.d(TAG, "Quiet hours; not notifying about " + state);
             return Result.success();                          // not saved, so it notifies later
         }
-        if (notify(state, lead)) {
+        if (AlertNotifier.show(getApplicationContext(), state, lead)) {
             store.edit().putString(KEY_LAST_STATE, state).commit();
         }
         return Result.success();
@@ -176,7 +167,7 @@ public class AlertCheckWorker extends Worker {
     }
 
     /** The user's alert preferences from Firestore, or the defaults if they can't be loaded. */
-    private static AlertPrefs loadPrefs(String uid) {
+    static AlertPrefs loadPrefs(String uid) {
         try {
             UserProfile profile = Tasks.await(new UserRepository().getProfile(uid), 10, TimeUnit.SECONDS);
             if (profile != null && profile.getAlertPrefs() != null) return profile.getAlertPrefs();
@@ -187,7 +178,7 @@ public class AlertCheckWorker extends Worker {
     }
 
     /** Rain toggle also covers thunderstorms (see AlertPrefs). */
-    private static boolean wanted(String state, AlertPrefs prefs) {
+    static boolean wanted(String state, AlertPrefs prefs) {
         switch (state) {
             case Schema.STATE_RAIN:
             case Schema.STATE_THUNDERSTORM:   return prefs.getRain();
@@ -199,7 +190,7 @@ public class AlertCheckWorker extends Worker {
     }
 
     /** True inside quietStart–quietEnd ("HH:mm"), including ranges past midnight like 23:00–07:00. */
-    private static boolean inQuietHours(AlertPrefs prefs) {
+    static boolean inQuietHours(AlertPrefs prefs) {
         int start = toMinutes(prefs.getQuietStart());
         int end = toMinutes(prefs.getQuietEnd());
         if (start < 0 || end < 0 || start == end) return false;
@@ -224,53 +215,5 @@ public class AlertCheckWorker extends Worker {
 
     private static Calendar nowInCampusTime() {
         return Calendar.getInstance(TimeZone.getTimeZone(WeatherRepository.TIMEZONE));
-    }
-
-    /** Posts the notification. False if notifications are off or not allowed. */
-    private boolean notify(String state, int lead) {
-        Context context = getApplicationContext();
-        NotificationManagerCompat manager = NotificationManagerCompat.from(context);
-        if (!manager.areNotificationsEnabled()) {
-            Log.d(TAG, "Notifications are off; not posting " + state);
-            return false;
-        }
-        Intent open = new Intent(context, MainActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent tap = PendingIntent.getActivity(context, 0, open, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_forecast)
-                .setContentTitle(context.getString(R.string.alert_title))
-                .setContentText(textFor(context, state, lead))
-                .setContentIntent(tap)
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        try {
-            manager.notify(NOTIFICATION_ID, builder.build());
-            Log.d(TAG, "Notified: " + state);
-            return true;
-        } catch (SecurityException e) {                       // POST_NOTIFICATIONS denied (Android 13+)
-            Log.w(TAG, "Notification permission missing.", e);
-            return false;
-        }
-    }
-
-    /** Rain/thunderstorm say when; heat and haze reuse the Home summary wording. */
-    private static String textFor(Context context, String state, int lead) {
-        switch (state) {
-            case Schema.STATE_THUNDERSTORM:   return context.getString(R.string.alert_thunderstorm, lead);
-            case Schema.STATE_RAIN:           return context.getString(R.string.alert_rain, lead);
-            default:                          return context.getString(summaryFor(state));
-        }
-    }
-
-    @StringRes
-    private static int summaryFor(String state) {
-        switch (state) {
-            case Schema.STATE_HEAT:           return R.string.summary_heat;
-            case Schema.STATE_HAZE_SENSITIVE: return R.string.summary_haze_sensitive;
-            case Schema.STATE_HAZE_UNHEALTHY: return R.string.summary_haze_unhealthy;
-            default:                          return R.string.summary_normal;
-        }
     }
 }

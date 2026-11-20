@@ -51,6 +51,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-messaging")
 
     // Google sign-in
     implementation("androidx.credentials:credentials:1.3.0")

@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * Firebase Auth for CuacaUM (FR6.1): sign in with Google, or continue as a guest.
@@ -163,10 +164,33 @@ public class AuthRepository {
     }
 
     /**
+     * Removes this phone's push token from the user, deletes the token, then signs out of
+     * Firebase and forgets the chosen Google account on this phone.
+     * Note: a guest who signs out can't get the same guest account back.
+     */
+    public Task<Void> signOut(@NonNull Context context) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            finishSignOut(context);
+            return Tasks.forResult(null);
+        }
+        String uid = user.getUid();
+        FirebaseMessaging messaging = FirebaseMessaging.getInstance();
+
+        return messaging.getToken()
+                .continueWithTask(t -> users.removeFcmToken(uid, t.getResult()))  // still signed in here
+                .continueWithTask(t -> messaging.deleteToken())                   // old token stops working
+                .continueWith(t -> {
+                    finishSignOut(context);       // always runs, even if a step above failed
+                    return null;
+                });
+    }
+
+    /**
      * Signs out of Firebase and forgets the chosen Google account on this phone.
      * Note: a guest who signs out can't get the same guest account back.
      */
-    public void signOut(@NonNull Context context) {
+    private void finishSignOut(@NonNull Context context) {
         auth.signOut();
         CredentialManager.create(context).clearCredentialStateAsync(
                 new ClearCredentialStateRequest(),
