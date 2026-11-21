@@ -167,17 +167,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- M3 tip card: top tip for the current weather. Tap opens the Tips screen. -->
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/tip_card_container"
-                    android:name="com.example.clandestinely.ui.tips.TipCardFragment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_weather" />
-
                 <!-- Alert state only (mockup 3.2). Pinned to the bottom of the outer card. -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_alert"
@@ -188,11 +177,9 @@
                     app:cardBackgroundColor="?attr/colorSecondary"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tip_card_container"
-                    app:layout_constraintVertical_bias="1.0"
+                    app:layout_constraintTop_toBottomOf="@id/card_weather"
                     app:strokeWidth="0dp"
                     tools:visibility="visible">
 
@@ -218,6 +205,404 @@
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?attr/colorOnSecondary"
                             tools:text="Heavy rain expected from 3pm. Carry an umbrella." />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- M7: Emergency Info Screen (Static, Offline, Tap To Call) -->
+                <!-- Pinned SOS Quick-Call Row -->
+                <LinearLayout
+                    android:id="@+id/layout_sos_buttons"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_alert">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCallSecurity"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1.3"
+                        android:backgroundTint="@color/navy_mid"
+                        android:text="UM SECURITY"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:icon="@android:drawable/ic_menu_call"
+                        app:iconTint="#FFFFFF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCall999"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#B71C1C"
+                        android:text="CALL 999"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:icon="@android:drawable/ic_menu_call"
+                        app:iconTint="#FFFFFF" />
+                </LinearLayout>
+
+                <!-- UM Emergency Directory Header -->
+                <TextView
+                    android:id="@+id/tv_directory_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="UM &amp; Pantai Emergency Directory"
+                    android:textColor="@color/sand_yellow"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_sos_buttons" />
+
+                <!-- PPUM Ambulance -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardAmbulance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/navy_mid"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_directory_title">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PPUM / UMMC Ambulance Hotline"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="03-7949 2898 • Severe injuries &amp; lightning strikes"
+                                android:textColor="#B5E8FD"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:contentDescription="Call Ambulance"
+                            android:src="@android:drawable/ic_menu_call"
+                            app:tint="#D32F2F" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- UM Student Health Clinic -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardClinic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/navy_mid"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardAmbulance">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="UM Student Health Clinic (Klinik Pelajar)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="03-7967 3212 • Campus medical care"
+                                android:textColor="#B5E8FD"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:contentDescription="Call Clinic"
+                            android:src="@android:drawable/ic_menu_call"
+                            app:tint="@color/sand_yellow" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Bomba Pantai -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBomba"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/navy_mid"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardClinic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Bomba (Pantai Fire &amp; Rescue)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="03-2282 4444 • Flash floods &amp; trapped vehicles"
+                                android:textColor="#B5E8FD"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:contentDescription="Call Bomba"
+                            android:src="@android:drawable/ic_menu_call"
+                            app:tint="#E65100" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Campus Weather Hazard SOPs Header -->
+                <TextView
+                    android:id="@+id/tv_sop_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Campus Weather Hazard SOPs (Tap to Expand)"
+                    android:textColor="@color/sand_yellow"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardBomba" />
+
+                <!-- SOP 1: Thunderstorms & Lightning -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_sop_lightning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardBackgroundColor="@color/navy_mid"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sop_title">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:id="@+id/sopHeaderLightning"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="⚡ Thunderstorms &amp; Lightning"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:contentDescription="Expand"
+                                android:src="@android:drawable/arrow_down_float"
+                                app:tint="#B5E8FD" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/sopBodyLightning"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:lineSpacingExtra="4dp"
+                            android:text="• Move immediately inside concrete faculty buildings, Central Library, or Kolej Kediaman.\n• Avoid open areas such as Varsity Lake, Varsity Field, and campus bus stops without lightning protection.\n• Never shelter under tall trees."
+                            android:textColor="#B5E8FD"
+                            android:textSize="13sp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- SOP 2: Fallen Trees & Landslips -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_sop_trees"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardBackgroundColor="@color/navy_mid"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_sop_lightning">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:id="@+id/sopHeaderTrees"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="🌳 Fallen Trees &amp; Slope Landslips"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:contentDescription="Expand"
+                                android:src="@android:drawable/arrow_down_float"
+                                app:tint="#B5E8FD" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/sopBodyTrees"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:lineSpacingExtra="4dp"
+                            android:text="• Stay alert along tree-lined routes (Lingkungan Budi) during strong gusts.\n• Keep at least 10 meters away from downed power cables.\n• Report blocked campus roads immediately to UM Security (03-7967 7777)."
+                            android:textColor="#B5E8FD"
+                            android:textSize="13sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- SOP 3: Flash Floods -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_sop_flood"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="@color/navy_mid"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_sop_trees">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:id="@+id/sopHeaderFlood"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="🌊 Flash Floods &amp; Road Ponding"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:contentDescription="Expand"
+                                android:src="@android:drawable/arrow_down_float"
+                                app:tint="#B5E8FD" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/sopBodyFlood"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:lineSpacingExtra="4dp"
+                            android:text="• Avoid low-lying campus exits and underpasses near KL Gate and Pantai Gate during heavy downpours.\n• Never drive or walk through moving floodwater.\n• Move parked vehicles to higher ground if water levels rise."
+                            android:textColor="#B5E8FD"
+                            android:textSize="13sp"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

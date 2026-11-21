@@ -1,13 +1,15 @@
 package com.example.clandestinely.ui.home;
 
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -18,14 +20,25 @@ import com.example.clandestinely.R;
 import com.example.clandestinely.data.model.CurrentWeather;
 import com.example.clandestinely.data.model.Schema;
 import com.example.clandestinely.data.repository.WeatherRepository;
-import com.example.clandestinely.data.repository.CurrentWeatherStates;
 import com.example.clandestinely.data.weather.WeatherClassifier;
 
 import java.util.Date;
-import java.util.List;
+
 public class HomeFragment extends Fragment {
 
     private TextView textTemperature, textFeelsLike, textHumidity, textRainChance, textAqi, textLastUpdated, textSummary;
+    private String pendingPhoneNumber;
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    EmergencyInfo.startCallIntent(this, pendingPhoneNumber);
+                } else if (pendingPhoneNumber != null && isAdded()) {
+                    EmergencyInfo.startDialIntent(this, pendingPhoneNumber);
+                } else if (isAdded()) {
+                    Toast.makeText(requireContext(), "Permission DENIED", Toast.LENGTH_SHORT).show();
+                }
+            });
 
     @Nullable
     @Override
@@ -51,6 +64,12 @@ public class HomeFragment extends Fragment {
 
         // 3. Update the screen whenever new weather arrives
         viewModel.getWeather().observe(getViewLifecycleOwner(), this::showWeather);
+
+        // 3. Delegate Emergency & Calling Features to EmergencyInfo
+        EmergencyInfo.setupEmergencyFeatures(this, view, phoneNumber -> {
+            pendingPhoneNumber = phoneNumber;
+            EmergencyInfo.makePhoneCall(this, requestPermissionLauncher, phoneNumber);
+        });
     }
 
     private void showWeather(CurrentWeather w) {
@@ -70,9 +89,7 @@ public class HomeFragment extends Fragment {
         String time = DateFormat.getTimeFormat(requireContext()).format(new Date(w.updatedAt));
         textLastUpdated.setText(getString(R.string.home_last_updated, time));
 
-        List<String> states = WeatherClassifier.classify(w);
-        CurrentWeatherStates.update(states);   // M3: tips follow the live weather
-        String state = WeatherClassifier.mostSevere(states);
+        String state = WeatherClassifier.mostSevere(WeatherClassifier.classify(w));
         textSummary.setText(summaryFor(state));
     }
 
