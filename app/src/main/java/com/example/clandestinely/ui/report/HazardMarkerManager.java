@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import androidx.annotation.NonNull;
 
 import com.example.clandestinely.data.model.HazardReport;
-import com.example.clandestinely.data.model.Schema;
 import com.example.clandestinely.data.repository.HazardRepository;
 import com.example.clandestinely.R;
 import com.google.firebase.auth.FirebaseAuth;

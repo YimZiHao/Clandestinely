@@ -9,7 +9,6 @@ import java.util.TimeZone;
  * - each confirmation adds 1 hour
  * - never more than 10 hours after it was made
  * - all reports end at midnight, Malaysia time
- *
  * Same logic as firebase/schema.js. The Firestore rules enforce the 2 h / +1 h / 10 h limits.
  * Works in milliseconds so it runs on every Android version.
  */
