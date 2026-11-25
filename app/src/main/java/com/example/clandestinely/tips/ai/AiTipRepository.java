@@ -181,8 +181,17 @@ public final class AiTipRepository {
         Futures.addCallback(call, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse response) {
-                String tip = AiTipPrompt.parseTip(response.getText());
-                TipGuardrail.Result check = TipGuardrail.check(tip, r.states);
+                // Anything that throws here (e.g. getText() on an empty reply) must still call
+                // finish(), or later requests for the same weather would wait forever.
+                TipGuardrail.Result check;
+                try {
+                    String tip = AiTipPrompt.parseTip(response.getText());
+                    check = TipGuardrail.check(tip, r.states);
+                } catch (RuntimeException e) {
+                    Log.w(TAG, "Could not read Gemini reply: " + e.getClass().getSimpleName());
+                    finish(memoKey, null, System.currentTimeMillis() + RETRY_AFTER_MS);
+                    return;
+                }
                 if (!check.ok) {
                     Log.w(TAG, "Gemini tip rejected: " + check.reason);
                     finish(memoKey, null, System.currentTimeMillis() + RETRY_AFTER_MS);
@@ -213,7 +222,13 @@ public final class AiTipRepository {
             callbacks = waiting.remove(memoKey);
         }
         if (callbacks == null) return;
-        for (Callback c : callbacks) c.onResult(tip);
+        for (Callback c : callbacks) {
+            try {
+                c.onResult(tip);
+            } catch (RuntimeException e) {   // one bad screen mustn't stop the others getting a result
+                Log.w(TAG, "Tip callback failed: " + e.getClass().getSimpleName());
+            }
+        }
     }
 
     private static String memoKey(TipRequest r) {
