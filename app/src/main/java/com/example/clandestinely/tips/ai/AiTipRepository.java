@@ -222,13 +222,13 @@ public final class AiTipRepository {
             callbacks = waiting.remove(memoKey);
         }
         if (callbacks == null) return;
-            for (Callback c : callbacks) {
-                try {
-                    c.onResult(tip);
-                } catch (RuntimeException e) {   // one bad screen mustn't stop the others getting a result
-                    Log.w(TAG, "Tip callback failed: " + e.getClass().getSimpleName());
-                }
+        for (Callback c : callbacks) {
+            try {
+                c.onResult(tip);
+            } catch (RuntimeException e) {   // one bad screen mustn't stop the others getting a result
+                Log.w(TAG, "Tip callback failed: " + e.getClass().getSimpleName());
             }
+        }
     }
 
     private static String memoKey(TipRequest r) {
