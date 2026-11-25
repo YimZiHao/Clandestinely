@@ -115,4 +115,59 @@ public class TipGuardrailTest {
             }
         }
     }
+
+    // ---------- Issue #34 ----------
+
+    @Test
+    public void decimalsAreNotSentenceEnds() {
+        assertEquals(2, TipGuardrail.sentenceCount("Feels like 34.5°C now. Drink water."));
+        assertTrue(TipGuardrail.check(
+                "Feels like 37.5°C at 2.30pm. Drink water and walk in the shade. Rest if dizzy.",
+                Collections.singletonList("heat")).ok);
+    }
+
+    @Test
+    public void negationInAnEarlierClauseDoesNotCount() {
+        TipGuardrail.Result r = TipGuardrail.check(
+                "No need to run, just wait under a tree until the thunder stops.", STORM);
+        assertFalse(r.ok);
+        assertTrue(r.reason.startsWith("unsafe"));
+        assertFalse(TipGuardrail.check(
+                "It is not raining hard yet so wait under a tree for the storm to pass.", STORM).ok);
+    }
+
+    @Test
+    public void negationRightBeforeThePhraseCounts() {
+        assertTrue(TipGuardrail.negatedBefore("never wait "));
+        assertTrue(TipGuardrail.negatedBefore("please avoid "));
+        assertTrue(TipGuardrail.negatedBefore("jangan berteduh di "));
+        assertFalse(TipGuardrail.negatedBefore("no need to run, just wait "));
+        assertFalse(TipGuardrail.negatedBefore("do not panic but wait "));
+    }
+
+    @Test
+    public void unsafeWordInsideAnotherWordIsIgnored() {
+        // "wade" must not match inside "persuade"
+        assertTrue(TipGuardrail.check(
+                "Heavy rain soon, so persuade friends to carry an umbrella.", RAIN_HEAT).ok);
+    }
+
+    @Test
+    public void topicWordsMatchWholeWordsOnly() {
+        // "sun" in "Sunday", "cool" in "school", "air" in "chair" must not count
+        List<String> uv = Collections.singletonList("uv");
+        assertFalse(TipGuardrail.check("See you at school on Sunday, bring a chair.", uv).ok);
+        assertTrue(TipGuardrail.check("Strong sun at noon, wear a hat and find shade.", uv).ok);
+    }
+
+    @Test
+    public void temperatureRangeIsNotAPhoneNumber() {
+        assertTrue(TipGuardrail.check(
+                "Feels like 33 - 35°C this afternoon, drink water often.",
+                Collections.singletonList("heat")).ok);
+        assertTrue(TipGuardrail.check(
+                "Feels like 33-35°C this afternoon, drink water often.",
+                Collections.singletonList("heat")).ok);
+        assertFalse(TipGuardrail.check("Rain soon, call 012 345 6789 for a lift.", RAIN_HEAT).ok);
+    }
 }

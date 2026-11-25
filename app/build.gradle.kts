@@ -55,7 +55,7 @@ dependencies {
 
     // M3 smart tips: Gemini through Firebase AI Logic, protected by App Check
     implementation("com.google.firebase:firebase-ai")
-    implementation("com.google.firebase:firebase-appcheck-debug")
+    debugImplementation("com.google.firebase:firebase-appcheck-debug") // debug builds only (src/debug)
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     implementation("com.google.guava:guava:31.0.1-android")      // ListenableFuture for Java
     implementation("org.reactivestreams:reactive-streams:1.0.4") // needed by the Java API

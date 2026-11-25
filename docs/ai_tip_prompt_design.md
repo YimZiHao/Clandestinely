@@ -167,11 +167,11 @@ Safety does not rely on the prompt alone. A tip has to get through **every** lay
 3. **JSON schema**: anything that isn't `{tip: string}` is rejected.
 4. **`TipGuardrail.check()` in the app**, in English and Bahasa Melayu:
    - clean-up: quotes, markdown and extra spaces removed
-   - length 15–220 characters, at most 3 sentences
-   - no links, emails or phone numbers (999 is allowed)
+   - length 15–220 characters, at most 3 sentences (a decimal like `34.5°C` is not a sentence end)
+   - no links, emails or phone numbers (7+ digits; 999 and ranges like `33 - 35` are allowed)
    - no doses (`200 mg`), "dose", "diagnose", "prescription"
-   - **unsafe advice per state**, e.g. "under a tree" or "swim" in a thunderstorm, "go for a run" or "open the window" in unhealthy haze. The check is skipped when the phrase is negated ("never wait under a tree", "jangan … bawah pokok").
-   - **on topic**: the tip must mention the most severe state (e.g. lightning / thunder / indoors / petir for a storm)
+   - **unsafe advice per state**, e.g. "under a tree" or "swim" in a thunderstorm, "go for a run" or "open the window" in unhealthy haze. The check is skipped only when a negation comes right before the phrase, in the same clause, with at most 2 words between ("never wait under a tree", "jangan berteduh di bawah pokok"). "No need to run, just wait under a tree" is still rejected.
+   - **on topic**: the tip must mention the most severe state (e.g. lightning / thunder / indoors / petir for a storm), matched as whole words so "sun" doesn't match "Sunday"
 5. **Cached tips are checked again.** Any signed-in user can write to `tips_cache`, so a tip read from the cache goes through the same `TipGuardrail` before it is shown.
 6. **Fallback**: if anything fails, the user sees the reviewed rule-based tip (Week 5 library).
 7. **Label**: the AI tip is marked "Smart tip (AI)" and says "Always check the sky and follow official warnings."
@@ -186,7 +186,7 @@ Safety does not rely on the prompt alone. A tip has to get through **every** lay
 | No Gemini call until the profile is loaded | Avoids a wasted call without sensitivities |
 | Retry after 5 minutes on failure | No hammering Gemini while offline or out of quota |
 | Guests: cache + rule tips only | Guests can't write the cache, so they would cost a call every time |
-| App Check | Only our real app can call Gemini (debug token in debug builds, Play Integrity in release) |
+| App Check | Only our real app can call Gemini (debug token in debug builds, Play Integrity in release). The debug provider is in `src/debug` only, so it never ships in the release APK |
 
 A cache key is states + time slot + sensitivities. In any one hour the campus weather maps to one or two state combinations, so each sensitivity mix (none, asthma, heat, ...) needs about one Gemini call per hour, shared by everyone with that mix. That is far inside the free tier.
 
